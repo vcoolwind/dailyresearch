@@ -29,7 +29,7 @@ public class Main {
         System.out.println(Arrays.toString(args));
         int exitCode = -1;
         if (args == null || args.length < 1) {
-            System.out.println("argv error");
+            System.out.println("args error");
             System.exit(exitCode);
         }
         String mainCls = args[0];
