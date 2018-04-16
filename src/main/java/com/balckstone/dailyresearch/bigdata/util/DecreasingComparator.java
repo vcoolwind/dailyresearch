@@ -4,6 +4,9 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 
+/**
+ * @author vcoolwind
+ */
 public class DecreasingComparator {
     public static class IntDecreasingComparator extends IntWritable.Comparator{
         @Override

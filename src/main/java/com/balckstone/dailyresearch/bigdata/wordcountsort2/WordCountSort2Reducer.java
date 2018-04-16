@@ -6,6 +6,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * @author vcoolwind
+ */
 public class WordCountSort2Reducer extends Reducer<IntWritable,Text,Text,IntWritable> {
     @Override
     protected void reduce(IntWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {

@@ -1,5 +1,6 @@
 package com.balckstone.dailyresearch.bigdata.wordcountsort;
 
+import com.balckstone.dailyresearch.bigdata.Runner;
 import com.balckstone.dailyresearch.bigdata.util.DecreasingComparator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -14,13 +15,21 @@ import org.apache.hadoop.mapreduce.lib.map.InverseMapper;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 
-public class WordCountSortMain {
+/**
+ * @author vcoolwind
+ */
+public class WordCountSortMain implements Runner {
     public static void main(String[] args) throws Exception {
+        new WordCountSortMain().run(args);
+    }
+
+    @Override
+    public int run(String[] args) throws Exception {
+
         Configuration configuration = new Configuration();
 
         Path tempDir = new Path("wordcount-temp-output");
         try {
-
             Job job = Job.getInstance(configuration, "word count");
             job.setJarByClass(WordCountSortMain.class);
             FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -55,8 +64,7 @@ public class WordCountSortMain {
         } finally {
             FileSystem.get(configuration).delete(tempDir, true);
         }
-        System.exit(0);
-
+        return 0;
     }
 
     private static class IntWritableDecreasingComparator extends IntWritable.Comparator {

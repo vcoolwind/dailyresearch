@@ -1,6 +1,7 @@
 package com.balckstone.dailyresearch.bigdata.wordcountsort2;
 
-import com.stone.bigdata.util.DecreasingComparator;
+import com.balckstone.dailyresearch.bigdata.Runner;
+import com.balckstone.dailyresearch.bigdata.util.DecreasingComparator;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -12,8 +13,16 @@ import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 
-public class WordCountSort2Main {
+/**
+ * @author vcoolwind
+ */
+public class WordCountSort2Main implements Runner {
     public static void main(String[] args) throws Exception {
+        new WordCountSort2Main().run(args);
+    }
+
+    @Override
+    public int run(String[] args) throws Exception {
         Configuration configuration = new Configuration();
         try {
             FileSystem.get(configuration).delete(new Path("wordcount-temp-output"), true);
@@ -57,7 +66,6 @@ public class WordCountSort2Main {
         sortJob.setOutputValueClass(IntWritable.class);
 
         sortJob.waitForCompletion(true);
-        System.exit(0);
-
+        return 0;
     }
 }

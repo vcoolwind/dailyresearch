@@ -7,6 +7,8 @@ import java.util.Map;
 import com.balckstone.dailyresearch.bigdata.hdfsfile.MapFileTest;
 import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
 import com.balckstone.dailyresearch.bigdata.wordcount.WordCountMain;
+import com.balckstone.dailyresearch.bigdata.wordcountsort.WordCountSortMain;
+import com.balckstone.dailyresearch.bigdata.wordcountsort2.WordCountSort2Main;
 
 /**
  * desc: 测试入口
@@ -21,6 +23,8 @@ public class Main {
         put(new SeqFileTest());
         put(new MapFileTest());
         put(new WordCountMain());
+        put(new WordCountSortMain());
+        put(new WordCountSort2Main());
     }
 
     private static void put(Runner runner) {

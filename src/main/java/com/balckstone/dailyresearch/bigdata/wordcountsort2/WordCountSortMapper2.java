@@ -7,6 +7,9 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 
+/**
+ * @author vcoolwind
+ */
 public class WordCountSortMapper2 extends Mapper<Text, Text,IntWritable,Text> {
     @Override
     protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
