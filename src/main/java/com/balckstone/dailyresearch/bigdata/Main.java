@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.balckstone.dailyresearch.bigdata.hdfsfile.MapFileTest;
 import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
+import com.balckstone.dailyresearch.bigdata.wordcount.WordCountMain;
 
 /**
  * desc: 测试入口
@@ -19,10 +20,12 @@ public class Main {
     static {
         put(new SeqFileTest());
         put(new MapFileTest());
+        put(new WordCountMain());
     }
 
     private static void put(Runner runner) {
         runners.put(runner.getClass().getSimpleName(), runner);
+        runners.put(runner.getClass().getName(), runner);
     }
 
     public static void main(String[] args) throws Exception {
