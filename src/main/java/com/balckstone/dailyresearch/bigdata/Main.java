@@ -9,6 +9,7 @@ import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
 import com.balckstone.dailyresearch.bigdata.wordcount.WordCountMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort.WordCountSortMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort2.WordCountSort2Main;
+import com.balckstone.dailyresearch.bigdata.xmlrecord.XmlMain;
 
 /**
  * desc: 测试入口
@@ -25,6 +26,7 @@ public class Main {
         put(new WordCountMain());
         put(new WordCountSortMain());
         put(new WordCountSort2Main());
+        put(new XmlMain());
     }
 
     private static void put(Runner runner) {
