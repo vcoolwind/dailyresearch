@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <property>
+        <name>color</name>
+        <value>red</value>
+        <final>false</final>
+    </property>
+    <property>
+        <name>size</name>
+        <value>32</value>
+        <final>true</final>
+    </property>
+    <property>
+        <name>width</name>
+        <value>1024</value>
+    </property>
+
+</configuration>
