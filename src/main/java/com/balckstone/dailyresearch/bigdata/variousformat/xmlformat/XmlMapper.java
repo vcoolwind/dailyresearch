@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.bigdata.xmlrecord;
+package com.balckstone.dailyresearch.bigdata.variousformat.xmlformat;
 
 import java.io.IOException;
 
@@ -16,6 +16,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 public class XmlMapper extends Mapper<LongWritable,Text,NullWritable,Text> {
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        //拿到行数据就输出，实际应用中，肯定是对行数据value进行分解的。
         context.write(NullWritable.get(),value);
     }
 }

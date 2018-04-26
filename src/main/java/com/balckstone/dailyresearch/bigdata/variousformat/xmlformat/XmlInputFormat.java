@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.bigdata.xmlrecord;
+package com.balckstone.dailyresearch.bigdata.variousformat.xmlformat;
 
 
 import java.io.IOException;
@@ -22,13 +22,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Reads records that are delimited by a specific begin/end tag.
+ * 自定义的InputFormat输入类，核心是要继承InputFormat，实现RecordReader。
+ * 自定义的RecordReader根据输入内容，拆分出一个个处理块。比如，这里就是根据start和end形成处理块。
+ * @author BlackStone
  */
 public class XmlInputFormat extends TextInputFormat {
 
     private static final Logger log = LoggerFactory.getLogger(XmlInputFormat.class);
 
-    public static final String START_TAG_KEY = "xmlinput.start";
-    public static final String END_TAG_KEY = "xmlinput.end";
+    public static final String START_TAG_KEY = "xml.input.start";
+    public static final String END_TAG_KEY = "xml.input.end";
 
     @Override
     public RecordReader<LongWritable, Text> createRecordReader(InputSplit split, TaskAttemptContext context) {

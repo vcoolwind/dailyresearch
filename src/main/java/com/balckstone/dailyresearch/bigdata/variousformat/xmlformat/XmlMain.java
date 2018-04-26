@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.bigdata.xmlrecord;
+package com.balckstone.dailyresearch.bigdata.variousformat.xmlformat;
 
 import com.balckstone.dailyresearch.bigdata.Runner;
 import org.apache.hadoop.conf.Configuration;
@@ -19,8 +19,8 @@ public class XmlMain implements Runner {
     @Override
     public int run(String[] args) throws Exception {
         Configuration config = new Configuration();
-        config.set("xmlinput.start", "<row");
-        config.set("xmlinput.end", "/>");
+        config.set(XmlInputFormat.START_TAG_KEY, "<row");
+        config.set(XmlInputFormat.END_TAG_KEY, "/>");
         Job job = Job.getInstance(config,"XmlMain");
         job.setJarByClass(getClass());
         FileInputFormat.addInputPath(job,new Path(args[0]));

@@ -9,7 +9,7 @@ import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
 import com.balckstone.dailyresearch.bigdata.wordcount.WordCountMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort.WordCountSortMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort2.WordCountSort2Main;
-import com.balckstone.dailyresearch.bigdata.xmlrecord.XmlMain;
+import com.balckstone.dailyresearch.bigdata.variousformat.xmlformat.XmlMain;
 
 /**
  * desc: 测试入口
