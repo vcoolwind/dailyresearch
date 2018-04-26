@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.balckstone.dailyresearch.bigdata.hdfsfile.MapFileTest;
 import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
+import com.balckstone.dailyresearch.bigdata.variousformat.kvtextformat.MyKVTextFormatMain;
+import com.balckstone.dailyresearch.bigdata.variousformat.textformat.MyTextFormatMain;
 import com.balckstone.dailyresearch.bigdata.wordcount.WordCountMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort.WordCountSortMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort2.WordCountSort2Main;
@@ -27,6 +29,9 @@ public class Main {
         put(new WordCountSortMain());
         put(new WordCountSort2Main());
         put(new XmlMain());
+        put(new MyTextFormatMain());
+        put(new MyKVTextFormatMain());
+
     }
 
     private static void put(Runner runner) {

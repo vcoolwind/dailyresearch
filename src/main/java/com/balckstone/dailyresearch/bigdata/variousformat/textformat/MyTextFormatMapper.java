@@ -1,8 +1,7 @@
-package com.balckstone.dailyresearch.bigdata.variousformat.texformat;
+package com.balckstone.dailyresearch.bigdata.variousformat.textformat;
 
 import java.io.IOException;
 
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;

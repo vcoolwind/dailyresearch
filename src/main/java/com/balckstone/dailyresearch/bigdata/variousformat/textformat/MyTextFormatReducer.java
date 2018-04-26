@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.bigdata.variousformat.texformat;
+package com.balckstone.dailyresearch.bigdata.variousformat.textformat;
 
 import java.io.IOException;
 
@@ -20,6 +20,7 @@ public class MyTextFormatReducer extends Reducer<NullWritable,Text,Text,Text> {
     protected void reduce(NullWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         for (Text value : values) {
             context.write(new Text("line"+num),value);
+            num++;
         }
     }
 }
