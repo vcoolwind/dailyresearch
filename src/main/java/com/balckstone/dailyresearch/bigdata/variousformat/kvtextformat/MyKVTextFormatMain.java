@@ -29,6 +29,7 @@ public class MyKVTextFormatMain implements Runner {
         FileOutputFormat.setOutputPath(job,new Path(args[1]));
 
         //KeyValueTextInputFormat key为第一个KEY_VALUE_SEPERATOR前的字符，value为本行后面数据
+        // 第一个匹配后是key，后面就value了。
         job.setInputFormatClass(KeyValueTextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
 
