@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.balckstone.dailyresearch.bigdata.hdfsfile.MapFileTest;
 import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
+import com.balckstone.dailyresearch.bigdata.tempraturesort.v1.TSortMainv1;
 import com.balckstone.dailyresearch.bigdata.variousformat.kvtextformat.MyKVTextFormatMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.nlinefromat.NLineMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.sequenceformat.SeqMain;
@@ -35,6 +36,7 @@ public class Main {
         put(new MyKVTextFormatMain());
         put(new NLineMain());
         put(new SeqMain());
+        put(new TSortMainv1());
     }
 
     private static void put(Runner runner) {
