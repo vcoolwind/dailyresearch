@@ -1,4 +1,6 @@
-package com.balckstone.dailyresearch.bigdata.io;// cc TextPair A Writable implementation that stores a pair of Text objects
+package com.balckstone.dailyresearch.bigdata.io;
+
+// cc TextPair A Writable implementation that stores a pair of Text objects
 // cc TextPairComparator A RawComparator for comparing TextPair byte representations
 // cc TextPairFirstComparator A custom RawComparator for comparing the first field of TextPair byte representations
 // vv TextPair

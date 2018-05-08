@@ -1,6 +1,5 @@
-package com.balckstone.dailyresearch.bigdata.tempraturesort.v2;
+package com.balckstone.dailyresearch.bigdata.tempraturesort.v1;
 
-import com.balckstone.dailyresearch.bigdata.io.IntPair;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -17,14 +16,16 @@ import java.util.Date;
 /**
  * @author vcoolwind
  */
-public class TSortMapper extends Mapper<LongWritable, Text, IntPair, IntWritable> {
-    private static final Logger log = LoggerFactory.getLogger(TSortMapper.class);
+public class TSortMapperV1 extends Mapper<LongWritable, Text, Text, IntWritable> {
+    private static final Logger log = LoggerFactory.getLogger(TSortMapperV1.class);
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         Object[] values = getYearMonthAndTemperature(value);
         if (values != null) {
             context.write(new Text(values[0].toString()), new IntWritable((Integer) values[1]));
+        }else{
+            context.getCounter("SortMapper","InvalidLine").increment(1);
         }
     }
 
@@ -33,11 +34,11 @@ public class TSortMapper extends Mapper<LongWritable, Text, IntPair, IntWritable
             return null;
         }
         String[] values = value.toString().split(",");
-        if (values.length < 4) {
+        if (values.length < 3) {
             return null;
         }
         String ymd = values[0];
-        String temperature = values[3];
+        String temperature = values[2];
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
         try {

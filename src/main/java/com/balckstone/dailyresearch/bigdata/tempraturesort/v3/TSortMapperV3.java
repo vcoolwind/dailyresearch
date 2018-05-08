@@ -1,4 +1,9 @@
-package com.balckstone.dailyresearch.bigdata.tempraturesort.v1;
+package com.balckstone.dailyresearch.bigdata.tempraturesort.v3;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -7,36 +12,33 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 /**
  * @author vcoolwind
  */
-public class TSortMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-    private static final Logger log = LoggerFactory.getLogger(TSortMapper.class);
+public class TSortMapperV3 extends Mapper<Text, Text, Text, IntWritable> {
+    private static final Logger log = LoggerFactory.getLogger(TSortMapperV3.class);
 
     @Override
-    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        Object[] values = getYearMonthAndTemperature(value);
+    protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+        Object[] values = getYearMonthAndTemperature(key,value);
         if (values != null) {
             context.write(new Text(values[0].toString()), new IntWritable((Integer) values[1]));
+        }else{
+            context.getCounter("SortMapper","InvalidLine").increment(1);
         }
     }
 
-    private Object[] getYearMonthAndTemperature(Text value) {
+    private Object[] getYearMonthAndTemperature(Text key,Text value) {
         if (value == null || value.toString().trim().length() == 0) {
             return null;
         }
         String[] values = value.toString().split(",");
-        if (values.length < 4) {
+        if (values.length < 2) {
             return null;
         }
-        String ymd = values[0];
-        String temperature = values[3];
+        String ymd = key.toString();
+        String temperature = values[1];
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
         try {

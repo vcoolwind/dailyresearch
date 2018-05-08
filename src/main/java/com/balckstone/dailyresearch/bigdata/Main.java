@@ -6,15 +6,18 @@ import java.util.Map;
 
 import com.balckstone.dailyresearch.bigdata.hdfsfile.MapFileTest;
 import com.balckstone.dailyresearch.bigdata.hdfsfile.SeqFileTest;
-import com.balckstone.dailyresearch.bigdata.tempraturesort.v1.TSortMainv1;
+import com.balckstone.dailyresearch.bigdata.tempraturesort.v1.TSortMainV1;
+import com.balckstone.dailyresearch.bigdata.tempraturesort.v1.TSortMainV1_2;
+import com.balckstone.dailyresearch.bigdata.tempraturesort.v2.TSortMainV2;
+import com.balckstone.dailyresearch.bigdata.tempraturesort.v3.TSortMainV3;
 import com.balckstone.dailyresearch.bigdata.variousformat.kvtextformat.MyKVTextFormatMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.nlinefromat.NLineMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.sequenceformat.SeqMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.textformat.MyTextFormatMain;
+import com.balckstone.dailyresearch.bigdata.variousformat.xmlformat.XmlMain;
 import com.balckstone.dailyresearch.bigdata.wordcount.WordCountMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort.WordCountSortMain;
 import com.balckstone.dailyresearch.bigdata.wordcountsort2.WordCountSort2Main;
-import com.balckstone.dailyresearch.bigdata.variousformat.xmlformat.XmlMain;
 
 /**
  * desc: 测试入口
@@ -36,7 +39,10 @@ public class Main {
         put(new MyKVTextFormatMain());
         put(new NLineMain());
         put(new SeqMain());
-        put(new TSortMainv1());
+        put(new TSortMainV1());
+        put(new TSortMainV1_2());
+        put(new TSortMainV2());
+        put(new TSortMainV3());
     }
 
     private static void put(Runner runner) {
