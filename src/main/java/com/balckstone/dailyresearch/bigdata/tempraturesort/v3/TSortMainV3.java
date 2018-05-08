@@ -46,7 +46,7 @@ public class TSortMainV3 implements Runner {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        // InputSampler 从输入文件中随机筛选读取key，然后对K按默认排序，确定分区。
+        // InputSampler 从输入文件中随机筛选读取key，然后对K按默认排序，确定分区。---如果原始文件无法按key排序，则出现了问题。
         // 局限性蛮大的，key的比较器决定了排序方式。
         InputSampler.Sampler<Text, Text> sampler = new InputSampler.RandomSampler<>(0.01, 1000, 100);
         InputSampler.writePartitionFile(job, sampler);

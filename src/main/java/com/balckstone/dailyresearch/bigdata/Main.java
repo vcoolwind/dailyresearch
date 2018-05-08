@@ -10,6 +10,7 @@ import com.balckstone.dailyresearch.bigdata.tempraturesort.v1.TSortMainV1;
 import com.balckstone.dailyresearch.bigdata.tempraturesort.v1.TSortMainV1_2;
 import com.balckstone.dailyresearch.bigdata.tempraturesort.v2.TSortMainV2;
 import com.balckstone.dailyresearch.bigdata.tempraturesort.v3.TSortMainV3;
+import com.balckstone.dailyresearch.bigdata.tempraturesort.v4.TSortMainV4;
 import com.balckstone.dailyresearch.bigdata.variousformat.kvtextformat.MyKVTextFormatMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.nlinefromat.NLineMain;
 import com.balckstone.dailyresearch.bigdata.variousformat.sequenceformat.SeqMain;
@@ -43,6 +44,7 @@ public class Main {
         put(new TSortMainV1_2());
         put(new TSortMainV2());
         put(new TSortMainV3());
+        put(new TSortMainV4());
     }
 
     private static void put(Runner runner) {
