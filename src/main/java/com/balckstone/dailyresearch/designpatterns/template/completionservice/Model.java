@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.designpatterns.template;
+package com.balckstone.dailyresearch.designpatterns.template.completionservice;
 
 public class Model<T> {
     private T origin;

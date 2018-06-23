@@ -1,10 +1,10 @@
-package com.balckstone.dailyresearch.designpatterns.template.v1;
+package com.balckstone.dailyresearch.designpatterns.template.completionservice.v1;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.balckstone.dailyresearch.designpatterns.template.Model;
+import com.balckstone.dailyresearch.designpatterns.template.completionservice.Model;
 import org.apache.commons.lang.StringUtils;
 
 public class T1Simple {

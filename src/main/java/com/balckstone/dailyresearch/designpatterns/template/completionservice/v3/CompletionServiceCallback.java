@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.designpatterns.template.v3;
+package com.balckstone.dailyresearch.designpatterns.template.completionservice.v3;
 
 import java.util.List;
 import java.util.concurrent.Callable;

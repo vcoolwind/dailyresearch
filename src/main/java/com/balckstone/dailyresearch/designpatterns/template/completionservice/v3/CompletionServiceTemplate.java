@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.designpatterns.template.v4;
+package com.balckstone.dailyresearch.designpatterns.template.completionservice.v3;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -54,7 +54,7 @@ public class CompletionServiceTemplate<V> {
         ThreadPoolExecutor.CallerRunsPolicy policy = new ThreadPoolExecutor.CallerRunsPolicy();
         ExecutorService executor = new ThreadPoolExecutor(threadNum, threadNum, 0L, MILLISECONDS, workQueue, policy);
         CompletionService<V> completionService = new ExecutorCompletionService<V>(executor);
-        List<Callable<V>> list = callback.getCallables();
+        List<Callable<V>> list = callback.genCallables();
         int taskNum = 0;
         for (Callable<V> callable : list) {
             completionService.submit(callable);

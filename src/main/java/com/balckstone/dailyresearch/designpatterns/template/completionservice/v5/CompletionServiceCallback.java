@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.designpatterns.template.v4;
+package com.balckstone.dailyresearch.designpatterns.template.completionservice.v5;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,19 @@ public abstract class CompletionServiceCallback<V> {
      * @author 王彦锋
      * @date 2018/6/22 20:51
      */
-    public void addCallable(Callable<V> callable) {
-        callList.add(callable);
+    public void addTask(final Runner<V> runner) {
+        callList.add(new Callable<V>() {
+            @Override
+            public V call() throws Exception {
+                return runner.run();
+            }
+        });
     }
 
     public List<Callable<V>> getCallables() {
+        if(callList.size()==0){
+            throw new IllegalArgumentException("No tasks to perform.Do you invoke addCallable() in handleTask?");
+        }
         handleTask();
         return callList;
     }

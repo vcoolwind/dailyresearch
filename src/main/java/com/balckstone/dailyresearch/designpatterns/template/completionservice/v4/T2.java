@@ -1,18 +1,18 @@
-package com.balckstone.dailyresearch.designpatterns.template.v4;
+package com.balckstone.dailyresearch.designpatterns.template.completionservice.v4;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import com.balckstone.dailyresearch.designpatterns.template.Model;
+import com.balckstone.dailyresearch.designpatterns.template.completionservice.Model;
 
 public class T2 {
 
     public static void main(String[] args) throws Exception {
-        List<Model<Integer>> reqList = new LinkedList<>();
+        List<Integer> reqList = new LinkedList<>();
         int times = 10;
         for (int i = 1; i < times; i++) {
-            reqList.add(new Model(i));
+            reqList.add(i);
         }
         long now = System.currentTimeMillis();
         T2 t2 = new T2();
@@ -22,11 +22,11 @@ public class T2 {
     }
 
     /**
-     * 对N多个字符串进行反转，并输出反转前后的结果。
+     * 求N个数字的平方
      *
      * @param reqList
      */
-    public List<Model<Integer>> execute(final List<Model<Integer>> reqList) throws Exception {
+    public List<Model<Integer>> execute(final List<Integer> reqList) throws Exception {
         final List<Model<Integer>> retList = new LinkedList<>();
         int threadNum = reqList.size() / 1000 + 1;
         //生成任务，提交线程池处理。
@@ -34,12 +34,11 @@ public class T2 {
                 new CompletionServiceCallback<Model<Integer>>() {
                     @Override
                     void handleTask() {
-                        for (final Model<Integer> model : reqList) {
+                        for (final Integer origin : reqList) {
                             addCallable(new Callable<Model<Integer>>() {
                                 @Override
                                 public Model<Integer> call() throws Exception {
-                                    model.setDest(doJob(model.getOrigin()));
-                                    return model;
+                                    return doJob(origin);
                                 }
                             });
                         }
@@ -53,14 +52,16 @@ public class T2 {
         return retList;
     }
 
-    private int doJob(int origin) {
+    private Model<Integer> doJob(int  origin) {
         try {
             //模拟生产，执行时间延长1毫秒
-            Thread.sleep(1);
+            Thread.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return origin * origin;
+        Model<Integer> model = new Model<>(origin);
+        model.setDest(origin*origin);
+        return  model;
     }
 
 }
