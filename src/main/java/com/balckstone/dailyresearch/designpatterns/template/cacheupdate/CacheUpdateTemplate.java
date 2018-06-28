@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.designpatterns.template.completionservice.cacheupdate;
+package com.balckstone.dailyresearch.designpatterns.template.cacheupdate;
 
 import java.util.Calendar;
 import java.util.concurrent.ConcurrentHashMap;

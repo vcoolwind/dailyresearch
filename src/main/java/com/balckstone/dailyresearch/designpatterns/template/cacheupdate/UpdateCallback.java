@@ -1,4 +1,4 @@
-package com.balckstone.dailyresearch.designpatterns.template.completionservice.cacheupdate;
+package com.balckstone.dailyresearch.designpatterns.template.cacheupdate;
 
 /**
  * 动作回调类

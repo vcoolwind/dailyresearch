@@ -26,10 +26,10 @@ public abstract class CompletionServiceCallback<V> {
     }
 
     public List<Callable<V>> getCallables() {
+        handleTask();
         if(callList.size()==0){
             throw new IllegalArgumentException("No tasks to perform.Do you invoke addCallable() in handleTask?");
         }
-        handleTask();
         return callList;
     }
 
