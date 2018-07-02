@@ -1,5 +1,8 @@
 package com.balckstone.dailyresearch.encoding;
 
+
+import static org.apache.hadoop.mapreduce.security.SecureShuffleUtils.toHex;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -115,44 +118,6 @@ public class EncodeDetector {
     }
 
 
-    public static String toHex(byte[] resultBytes) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < resultBytes.length; i++) {
-            if (Integer.toHexString(0xFF & resultBytes[i]).length() == 1) {
-                builder.append("0").append(
-                        Integer.toHexString(0xFF & resultBytes[i]));
-            } else {
-                builder.append(Integer.toHexString(0xFF & resultBytes[i]));
-            }
-        }
-        return builder.toString().toUpperCase();
-    }
-
-
-
-
-
-    /**
-     * 把16进制字符串转换成字节数组
-     *
-     * @param hex
-     * @return byte[]
-     */
-    public static byte[] hexStringToByte(String hex) {
-        int len = (hex.length() / 2);
-        byte[] result = new byte[len];
-        char[] achar = hex.toCharArray();
-        for (int i = 0; i < len; i++) {
-            int pos = i * 2;
-            result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
-        }
-        return result;
-    }
-
-    private static int toByte(char c) {
-        byte b = (byte) "0123456789ABCDEF".indexOf(c);
-        return b;
-    }
 
 
 }

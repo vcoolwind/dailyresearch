@@ -1,9 +1,13 @@
 package com.balckstone.dailyresearch.encoding;
 
+import static util.HexUtils.toBytes;
+import static util.HexUtils.toHex;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +19,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 
-public class EncodeDetectorTest {
+public class EncodingTest {
     private static String dir = "D:/encoding_test/";
     private static Map<String, String> bomMap = new HashMap<String, String>();
 
@@ -49,7 +53,7 @@ public class EncodeDetectorTest {
         byte[] contentBytes = FileUtils.readFileToByteArray(goal);
         String newEncoding = EncodeDetector.getEncoding(contentBytes);
         System.out.println("字节探测编码：" + newEncoding);
-        System.out.println("文件内容(hex)：" + EncodeDetector.toHex(contentBytes));
+        System.out.println("文件内容(hex)：" + toHex(contentBytes));
         System.out.println("文件内容(字符)：" + new String(contentBytes, newEncoding));
         System.out.println(StringUtils.leftPad("", 180, "-"));
     }
@@ -123,6 +127,7 @@ public class EncodeDetectorTest {
     private static void httpWrite(byte[] respBytes, String readEncoding, String writeEncoding, String thePrefix) throws IOException {
         System.out.println(StringUtils.leftPad("", 180, "-"));
         String readConvertStr = new String(respBytes, readEncoding);
+        System.out.println(readConvertStr);
         File goalFile = new File(dir + thePrefix
                 + readEncoding.replace("-", "")
                 + "_"
@@ -146,6 +151,16 @@ public class EncodeDetectorTest {
         os.write(bytes);
         os.close();
     }
+    private static void hide() throws UnsupportedEncodingException {
+        String content = "众禄基金";
+        String gbkHex = toHex(content.getBytes("GBK"));
+        String utf8Hex = toHex(content.getBytes("utf-8"));
+        System.out.println(gbkHex);
+        System.out.println(utf8Hex);
+
+        System.out.println(new String(toBytes(gbkHex),"GBK"));
+        System.out.println(new String(toBytes(utf8Hex),"utf-8"));
+    }
 
     private static void testFileRW() throws IOException {
         String content = "a解a放区的天，是晴朗的天a";
@@ -162,21 +177,24 @@ public class EncodeDetectorTest {
         testFile(content, "UTF-8", null);
         //写入bom进行测试
         for (Map.Entry<String, String> entry : bomMap.entrySet()) {
-            testFile(content, entry.getValue(), EncodeDetector.hexStringToByte(entry.getKey()));
+            testFile(content, entry.getValue(), toBytes(entry.getKey()));
         }
     }
 
+    private static void testFirst() throws IOException {
+        String hex1 = "D6DAC2BBBBF9BDF0";
+        String hex2 = "E4BC97E7A684E59FBAE98791";
+        write(new File("D:/encoding_test/hex1"),toBytes(hex1));
+        write(new File("D:/encoding_test/hex2"),toBytes(hex2));
+    }
+
     public static void main(String[] args) throws IOException {
-        //String content = "a解a放区的天，是晴朗的天a";
-        // String newContent = new String(content.getBytes("utf-8"), "GBK");
-        // System.out.println(newContent);
-        //输出 a瑙鏀惧尯鐨勫ぉ锛屾槸鏅存湕鐨勫ぉa
+        //testFirst();
+         testFileRW();
 
-        testFileRW();
+         //testHttp("http://pv.sohu.com/cityjson?ie=GBK", "sohu");
 
-        // testHttp("http://pv.sohu.com/cityjson?ie=GBK", "sohu");
-
-        // testHttp("https://www.99bill.com/seashell/common/errorvpos.htmlGBK", "99bill");
+         //testHttp("https://www.99bill.com/seashell/common/errorvpos.html", "99bill");
     }
 
 }

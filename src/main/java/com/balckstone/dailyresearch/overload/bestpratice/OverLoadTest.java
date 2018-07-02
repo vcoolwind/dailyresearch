@@ -28,7 +28,7 @@ class OverLoadImpl {
            return show((ChildA) p);
         }
         throw new UnsupportedOperationException(
-                String.format("this method can't support the class with [%s], do you forget add it?", p.getClass().getName())
+                String.format("this method can't support the class [%s], do you forget add it?", p.getClass().getName())
         );
     }
 
