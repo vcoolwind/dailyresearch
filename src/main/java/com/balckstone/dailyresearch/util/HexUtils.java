@@ -1,4 +1,4 @@
-package util;
+package com.balckstone.dailyresearch.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

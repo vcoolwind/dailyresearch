@@ -8,8 +8,6 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,7 +73,7 @@ public class MongoHelper {
             optBuilder.socketKeepAlive(true);
             //optBuilder.readPreference(ReadPreference.secondaryPreferred());
             //optBuilder.readPreference(ReadPreference.secondary());
-            optBuilder.writeConcern(WriteConcern.REPLICA_ACKNOWLEDGED);
+            optBuilder.writeConcern(WriteConcern.SAFE);
             MongoClientOptions mongoOptions = optBuilder.build();
 
             //认证
@@ -86,11 +84,17 @@ public class MongoHelper {
             MongoCredential credential = MongoCredential.createCredential(user, db, password.toCharArray());
 
             List<ServerAddress> seeds = new LinkedList<ServerAddress>();
-            seeds.add(new ServerAddress("192.168.85.171", 27017));
-            seeds.add(new ServerAddress("192.168.85.172", 27017));
-            seeds.add(new ServerAddress("192.168.85.173", 27017));
-            mongo = new MongoClient(seeds, Arrays.asList(credential), mongoOptions);
-            mongo.setReadPreference(ReadPreference.secondary());
+            seeds.add(new ServerAddress("172.18.10.72", 27017));
+
+            // seeds.add(new ServerAddress("192.168.85.175", 27017));
+
+            //seeds.add(new ServerAddress("192.168.85.172", 27017));
+            //seeds.add(new ServerAddress("192.168.85.173", 27017));
+            //mongo = new MongoClient(seeds, Arrays.asList(credential), mongoOptions);
+            //mongo = new MongoClient(seeds,  mongoOptions);
+
+            mongo = new MongoClient(new ServerAddress("172.18.10.72", 27017),  mongoOptions);
+            //mongo.setReadPreference(ReadPreference.primary());
             // 使用安全模式写入
             //mongo.setWriteConcern(WriteConcern.SAFE);
 

@@ -10,17 +10,20 @@ import java.util.Map;
 import java.util.Random;
 
 public class MonoRWTest {
+    private static String collName = "wyf_test";
     private static void doWrite() {
         final  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 1; j++) {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    int i = 1;
+                    int i = 0;
                     while (true) {
+                        i++;
                         final MongoService mongoService = new MongoService();
-                        final DBCollection collection = mongoService.getCollection("test");
+
+                        final DBCollection collection = mongoService.getCollection(collName);
                         mongoService.createIndexs(collection,"dt");
                         Map<String, Object> dataMap = new HashMap<>(15);
                         dataMap.put("pos", i);
@@ -33,14 +36,14 @@ public class MonoRWTest {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        i++;
+
                         if (i % 1000 == 0) {
                             System.out.println(sdf.format(new Date())+" "+Thread.currentThread().getName()+"完成写入1000条数据！");
                         }
                     }
                 }
             });
-            t.setName("Thread"+j);
+            t.setName("WriteThread"+j);
             t.start();
         }
         System.out.println("Write start OK!");
@@ -48,14 +51,14 @@ public class MonoRWTest {
 
     private static void doRead() {
 
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 1; j++) {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     int i = 1;
                     while (true) {
                         final MongoService mongoService = new MongoService();
-                        final DBCollection collection = mongoService.getCollection("test");
+                        final DBCollection collection = mongoService.getCollection(collName);
                         BasicDBObject field = new BasicDBObject("_id", 1);
                         field.append("dt_display1", 1).append("add", 1);
 

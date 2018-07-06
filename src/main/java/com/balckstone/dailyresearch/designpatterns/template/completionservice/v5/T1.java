@@ -1,6 +1,6 @@
 package com.balckstone.dailyresearch.designpatterns.template.completionservice.v5;
 
-import static util.StringHelper.getRandomString;
+import static com.balckstone.dailyresearch.util.StringHelper.getRandomString;
 
 import java.util.LinkedList;
 import java.util.List;

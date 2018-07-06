@@ -1,7 +1,7 @@
 package com.balckstone.dailyresearch.encoding;
 
-import static util.HexUtils.toBytes;
-import static util.HexUtils.toHex;
+import static com.balckstone.dailyresearch.util.HexUtils.toBytes;
+import static com.balckstone.dailyresearch.util.HexUtils.toHex;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

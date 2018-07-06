@@ -1,4 +1,4 @@
-package util;
+package com.balckstone.dailyresearch.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
