@@ -1,10 +1,12 @@
 package com.blackstone.dailyresearch.jdbc;
 
 import java.io.File;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
@@ -15,10 +17,11 @@ public class JDBCHelper {
     private static final String CUSTINFO_SQL = "select count(1) from custinfo where mobileno= ? ";
     private static final String INSERT_SQL = "INSERT INTO other_cust_summary(mobile, tag1, source_from, isfirst)" +
             "VALUES(?,?,?,?);";
+    private static final String incomeSql = "{  call IBP_CALC_INCOME(?,?,?,?) }";
+    private static final String NEXT_WORKDAY_SQL = "{  ?= call IBF_GET_NEXTNWORKDAY2(?,?,?) }";
     private String url;
     private String user;
     private String password;
-    private Connection conn;
 
     public JDBCHelper(String url, String user, String password) {
         this.url = url;
@@ -26,13 +29,29 @@ public class JDBCHelper {
         this.password = password;
     }
 
+    public static void main(String[] args) throws Exception {
+        //JDBCHelper jdbc = new JDBCHelper("jdbc:postgresql://10.10.99.245:5432/trade", "******", "******");
+        JDBCHelper jdbc = new JDBCHelper("jdbc:postgresql://10.10.2.228:5432/trade", "zlfund", "zlfund");
+        List<OtherCust> custs = new ArrayList<>();
 
+        File f = new File("D:/0727.csv");
+        List lines = FileUtils.readLines(f, "utf-8");
+        for (Object line : lines) {
+            String[] attrArray = line.toString().split(",");
+            custs.add(new OtherCust(attrArray[1], attrArray[0], attrArray[2]));
+        }
+        System.out.println(custs.get(0));
+        System.out.println(custs.size());
+        int i = 0;
+        for (OtherCust cust : custs) {
+            jdbc.insert(cust);
+            System.out.println(i++);
+        }
+    }
 
     private synchronized Connection getConn() throws Exception {
-        if (conn == null || conn.isClosed()) {
-            Class.forName("org.postgresql.Driver").newInstance();
-            conn = DriverManager.getConnection(url, user, password);
-        }
+        Class.forName("org.postgresql.Driver").newInstance();
+        Connection conn = DriverManager.getConnection(url, user, password);
         return conn;
     }
 
@@ -41,7 +60,8 @@ public class JDBCHelper {
     }
 
     private boolean isFirst(String mobile, String sql) throws Exception {
-        PreparedStatement statement = getConn().prepareStatement(sql);
+        Connection conn = getConn();
+        PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, mobile);
         ResultSet rs = statement.executeQuery();
         int count = 0;
@@ -50,6 +70,7 @@ public class JDBCHelper {
         }
         rs.close();
         statement.close();
+        conn.close();
         if (count > 0) {
             return false;
         } else {
@@ -58,7 +79,8 @@ public class JDBCHelper {
     }
 
     private boolean exists(OtherCust cust) throws Exception {
-        PreparedStatement statement = getConn().prepareStatement(EXISTS_SQL);
+        Connection conn = getConn();
+        PreparedStatement statement = conn.prepareStatement(EXISTS_SQL);
         statement.setString(1, cust.getMobile());
         statement.setString(2, cust.getSource_from());
         ResultSet rs = statement.executeQuery();
@@ -68,6 +90,7 @@ public class JDBCHelper {
         }
         rs.close();
         statement.close();
+        conn.close();
         if (count > 0) {
             return true;
         } else {
@@ -76,15 +99,17 @@ public class JDBCHelper {
     }
 
     public boolean doInsert(OtherCust cust) throws Exception {
-        getConn().setAutoCommit(false);
+        Connection conn = getConn();
+        conn.setAutoCommit(false);
         PreparedStatement statement = getConn().prepareStatement(INSERT_SQL);
         statement.setString(1, cust.getMobile());
         statement.setString(2, cust.getTag1());
         statement.setString(3, cust.getSource_from());
         statement.setString(4, cust.getIsFirst());
         boolean ret = statement.execute();
-        getConn().commit();
+        conn.commit();
         statement.close();
+        conn.close();
         return ret;
     }
 
@@ -98,25 +123,50 @@ public class JDBCHelper {
             return doInsert(cust);
         }
     }
-    public static void main(String[] args) throws Exception {
-        JDBCHelper jdbc = new JDBCHelper("jdbc:postgresql://10.10.2.220:5432/trade", "zlfund", "zlfund");
-        //OtherCust cust = new OtherCust("13900053890", "话费", "ZL");
-        //jdbc.insert(cust);
-        List<OtherCust> custs = new ArrayList<>();
 
-        File f = new File("D:/other.csv");
-        List lines = FileUtils.readLines(f,"utf-8");
-        for (Object line : lines) {
-            String[] attrArray = line.toString().split(",");
-            custs.add(new OtherCust(attrArray[1], attrArray[0], attrArray[2]));
-        }
-        System.out.println(custs.get(0));
-        System.out.println(custs.size());
-        int i = 0;
-        for (OtherCust cust : custs) {
-            jdbc.insert(cust);
-            System.out.println(i++);
-        }
+    public String callIncomeProc(String startDT, String endDT) throws Exception {
+        System.out.println("IBP_CALC_INCOME(" + startDT + "," + endDT + ") start");
+        CallableStatement cStmt = null;
+        Connection conn = getConn();
+
+        cStmt = conn.prepareCall(incomeSql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        cStmt.setString(1, startDT);
+        cStmt.setString(2, endDT);
+
+        cStmt.registerOutParameter(3, Types.VARCHAR);
+        cStmt.registerOutParameter(4, Types.VARCHAR);
+        cStmt.execute();
+        String errcode = cStmt.getString(3);
+        String errmsg = cStmt.getString(4);
+
+        System.out.println("IBP_CALC_INCOME(" + startDT + "," + endDT + ") end");
+        cStmt.close();
+        conn.close();
+        return "errcode:" + errcode + ";errmsg:" + errmsg;
+        //return "ok";
+    }
+
+    public String getNextWorkDay(final String inDay, final int offset) throws Exception {
+        // PI_WORKDATE IN varchar, --工作
+        // PI_NEXTN IN numeric, --第几个工作日
+        // PI_FUNDID IN varchar --基金代码 目前废弃
+        String nextDay = "";
+        Connection conn = null;
+        CallableStatement cStmt = null;
+        conn = getConn();
+        cStmt = conn.prepareCall(NEXT_WORKDAY_SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        cStmt.setString(2, inDay);
+        cStmt.setInt(3, offset);
+        // 第三个 目前无效
+        cStmt.setString(4, "");
+
+        cStmt.registerOutParameter(1, Types.VARCHAR);
+        cStmt.execute();
+        nextDay = cStmt.getString(1);
+        cStmt.close();
+        conn.close();
+
+        return nextDay;
     }
 
 }
