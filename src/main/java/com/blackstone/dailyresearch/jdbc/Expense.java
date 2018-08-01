@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class Income {
+public class Expense {
     public static void main(String[] args) throws Exception {
         final String url = "jdbc:postgresql://10.10.99.245:5432/trade";
         final String user = "******";
@@ -22,7 +22,7 @@ public class Income {
         ExecutorService executor = new ThreadPoolExecutor(5, 5, 0L, MILLISECONDS, workQueue, policy);
         CompletionService<String> completionService = new ExecutorCompletionService<String>(executor);
         int taskNum = 0;
-        String start = "20180702";
+        String start = "20170220";
         String end = "20180801";
 
         String current = start;
@@ -38,7 +38,7 @@ public class Income {
                     @Override
                     public String call() throws Exception {
                         JDBCHelper jdbc = new JDBCHelper(url, user, pwd);
-                        return jdbc.callIncomeProc(exeDay, nextDay);
+                        return jdbc.callExpenseByRetainProc(exeDay, nextDay);
                     }
                 });
                 taskNum++;

@@ -1,5 +1,6 @@
 package com.blackstone.dailyresearch.jdbc;
 
+import com.blackstone.dailyresearch.util.ConsoleLog;
 import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -18,6 +19,9 @@ public class JDBCHelper {
     private static final String INSERT_SQL = "INSERT INTO other_cust_summary(mobile, tag1, source_from, isfirst)" +
             "VALUES(?,?,?,?);";
     private static final String incomeSql = "{  call IBP_CALC_INCOME(?,?,?,?) }";
+    private static final String EXPENSE_BY_RETAIN_SQL = "{  call IBP_CALC_EXPENSE_BY_RETAIN(?,?,?,?) }";
+
+
     private static final String NEXT_WORKDAY_SQL = "{  ?= call IBF_GET_NEXTNWORKDAY2(?,?,?) }";
     private String url;
     private String user;
@@ -30,22 +34,21 @@ public class JDBCHelper {
     }
 
     public static void main(String[] args) throws Exception {
-        //JDBCHelper jdbc = new JDBCHelper("jdbc:postgresql://10.10.99.245:5432/trade", "******", "******");
-        JDBCHelper jdbc = new JDBCHelper("jdbc:postgresql://10.10.2.228:5432/trade", "zlfund", "zlfund");
+        JDBCHelper jdbc = new JDBCHelper("jdbc:postgresql://10.10.99.245:5432/trade", "******", "******");
         List<OtherCust> custs = new ArrayList<>();
 
-        File f = new File("D:/0727.csv");
+        File f = new File("D:/0731.csv");
         List lines = FileUtils.readLines(f, "utf-8");
         for (Object line : lines) {
             String[] attrArray = line.toString().split(",");
-            custs.add(new OtherCust(attrArray[1], attrArray[0], attrArray[2]));
+            custs.add(new OtherCust(attrArray[0], attrArray[1], attrArray[2]));
         }
-        System.out.println(custs.get(0));
-        System.out.println(custs.size());
+        ConsoleLog.println(custs.get(0));
+        ConsoleLog.println(custs.size());
         int i = 0;
         for (OtherCust cust : custs) {
             jdbc.insert(cust);
-            System.out.println(i++);
+            ConsoleLog.println(i++);
         }
     }
 
@@ -115,7 +118,7 @@ public class JDBCHelper {
 
     public boolean insert(OtherCust cust) throws Exception {
         if (exists(cust)) {
-            System.out.println("exists:" + cust.getMobile() + " " + cust.getSource_from());
+            ConsoleLog.println("exists:" + cust.getMobile() + " " + cust.getSource_from());
             return false;
         } else {
             String isFirst = isFirst(cust.getMobile()) ? "1" : "0";
@@ -125,7 +128,7 @@ public class JDBCHelper {
     }
 
     public String callIncomeProc(String startDT, String endDT) throws Exception {
-        System.out.println("IBP_CALC_INCOME(" + startDT + "," + endDT + ") start");
+        ConsoleLog.println("IBP_CALC_INCOME(" + startDT + "," + endDT + ") start");
         CallableStatement cStmt = null;
         Connection conn = getConn();
 
@@ -139,12 +142,35 @@ public class JDBCHelper {
         String errcode = cStmt.getString(3);
         String errmsg = cStmt.getString(4);
 
-        System.out.println("IBP_CALC_INCOME(" + startDT + "," + endDT + ") end");
+        ConsoleLog.println("IBP_CALC_INCOME(" + startDT + "," + endDT + ") end");
         cStmt.close();
         conn.close();
         return "errcode:" + errcode + ";errmsg:" + errmsg;
         //return "ok";
     }
+
+    public String callExpenseByRetainProc(String startDT, String endDT) throws Exception {
+        ConsoleLog.println("IBP_CALC_EXPENSE_BY_RETAIN(" + startDT + "," + endDT + ") start");
+        CallableStatement cStmt = null;
+        Connection conn = getConn();
+
+        cStmt = conn.prepareCall(EXPENSE_BY_RETAIN_SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        cStmt.setString(1, startDT);
+        cStmt.setString(2, endDT);
+
+        cStmt.registerOutParameter(3, Types.VARCHAR);
+        cStmt.registerOutParameter(4, Types.VARCHAR);
+        cStmt.execute();
+        String errcode = cStmt.getString(3);
+        String errmsg = cStmt.getString(4);
+
+        ConsoleLog.println("IBP_CALC_EXPENSE_BY_RETAIN(" + startDT + "," + endDT + ") end");
+        cStmt.close();
+        conn.close();
+        return "errcode:" + errcode + ";errmsg:" + errmsg;
+        //return "ok";
+    }
+
 
     public String getNextWorkDay(final String inDay, final int offset) throws Exception {
         // PI_WORKDATE IN varchar, --工作
