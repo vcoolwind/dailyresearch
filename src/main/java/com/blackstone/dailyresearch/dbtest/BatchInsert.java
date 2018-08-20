@@ -57,8 +57,8 @@ public class BatchInsert {
         try {
             Connection conn = null;
             Class.forName("org.postgresql.Driver").newInstance();
-            String url = "jdbc:postgresql://10.234.99.245:5432/trade";
-            conn = DriverManager.getConnection(url, "zlfund", "zlfund");
+            String url = "jdbc:postgresql://10.234.99.245:5432/XXXX";
+            conn = DriverManager.getConnection(url, "******", "******");
             //copyToFile(conn, "d:/data.txt", "(SELECT custno,tradeacco,bank_no,bank_acco from tmp_insertinto_20180404 where custno like 'wyf%')");
             long start = System.currentTimeMillis();
             copyFromFile(conn,"d:/data.txt","tmp_insertinto_20180404");
@@ -76,8 +76,8 @@ public class BatchInsert {
             PreparedStatement stmt = null;
 
             Class.forName("org.postgresql.Driver").newInstance();
-            String url = "jdbc:postgresql://10.234.99.245:5432/trade";
-            conn = DriverManager.getConnection(url, "zlfund", "zlfund");
+            String url = "jdbc:postgresql://10.234.99.245:5432/XXXXXX";
+            conn = DriverManager.getConnection(url, "******", "******");
 
             String SQL = "INSERT INTO tmp_insertinto_20180404(custno,tradeacco,bank_no,bank_acco) " +
                     "VALUES(?, ?, ?, ?)";

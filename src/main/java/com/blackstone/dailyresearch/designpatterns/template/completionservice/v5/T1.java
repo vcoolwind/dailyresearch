@@ -35,7 +35,7 @@ public class T1 {
                 new CompletionServiceCallback<Model<String>>() {
 
                     @Override
-                    void handleTask() {
+                   public void handleTask() {
                         for (final String origin : reqList) {
                             addTask(new Runner<Model<String>>() {
                                 @Override

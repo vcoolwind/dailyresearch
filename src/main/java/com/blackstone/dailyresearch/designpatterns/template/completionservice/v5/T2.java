@@ -31,7 +31,7 @@ public class T2 {
         CompletionServiceTemplate.getInstance().execute(threadNum, reqList.size(),
                 new CompletionServiceCallback<Model<Integer>>() {
                     @Override
-                    void handleTask() {
+                   public void handleTask() {
                         for (final Integer origin : reqList) {
                             addTask(new Runner<Model<Integer>>() {
                                 @Override

@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Expense {
     public static void main(String[] args) throws Exception {
-        final String url = "jdbc:postgresql://10.10.99.245:5432/trade";
+        final String url = "jdbc:postgresql://10.10.99.245:5432/XXX";
         final String user = "******";
         final String pwd = "******";
 

@@ -1,4 +1,4 @@
-package com.blackstone.dailyresearch.jdbc;
+package com.blackstone.dailyresearch.custimport;
 
 public class OtherCust {
     private String mobile;

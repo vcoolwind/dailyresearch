@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Income {
     public static void main(String[] args) throws Exception {
-        final String url = "jdbc:postgresql://10.10.99.245:5432/trade";
+        final String url = "jdbc:postgresql://10.10.2.220:5432/XXX";
         final String user = "******";
         final String pwd = "******";
 
@@ -22,8 +22,8 @@ public class Income {
         ExecutorService executor = new ThreadPoolExecutor(5, 5, 0L, MILLISECONDS, workQueue, policy);
         CompletionService<String> completionService = new ExecutorCompletionService<String>(executor);
         int taskNum = 0;
-        String start = "20180702";
-        String end = "20180801";
+        String start = "20161230";
+        String end = "20171229";
 
         String current = start;
 

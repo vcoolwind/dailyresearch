@@ -31,18 +31,18 @@ public abstract class CompletionServiceCallback<V> {
     }
 
     public List<Callable<V>> getCallables() {
-        if(callList.size()==0){
-            throw new IllegalArgumentException("No tasks to perform.Do you invoke addCallable() in handleTask?");
-        }
         handleTask();
+        if(callList.size()==0){
+            throw new IllegalArgumentException("No tasks to perform.Do you invoke addTask() in handleTask?");
+        }
         return callList;
     }
 
-    abstract  void handleTask();
+    public abstract  void handleTask();
     /**
      * 处理每个任务执行产生的结果
      *
      * @param result
      */
-    abstract void handleResult(V result);
+    public abstract void handleResult(V result);
 }
