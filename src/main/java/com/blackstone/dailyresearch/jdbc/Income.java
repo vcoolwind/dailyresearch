@@ -13,22 +13,19 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Income {
     public static void main(String[] args) throws Exception {
-        final String url = "jdbc:postgresql://10.10.2.220:5432/XXX";
-        final String user = "******";
-        final String pwd = "******";
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(10000);
         ThreadPoolExecutor.CallerRunsPolicy policy = new ThreadPoolExecutor.CallerRunsPolicy();
         ExecutorService executor = new ThreadPoolExecutor(5, 5, 0L, MILLISECONDS, workQueue, policy);
         CompletionService<String> completionService = new ExecutorCompletionService<String>(executor);
         int taskNum = 0;
-        String start = "20161230";
-        String end = "20171229";
+        String start = "20180801";
+        String end = "20180903";
 
         String current = start;
 
         while (true) {
-            JDBCHelper jdbc1 = new JDBCHelper(url, user, pwd);
+            JDBCHelper jdbc1 = new JDBCHelper();
             final String nextDay = jdbc1.getNextWorkDay(current, 1);
 
             final String exeDay = current;
@@ -37,7 +34,7 @@ public class Income {
                 completionService.submit(new Callable<String>() {
                     @Override
                     public String call() throws Exception {
-                        JDBCHelper jdbc = new JDBCHelper(url, user, pwd);
+                        JDBCHelper jdbc = new JDBCHelper();
                         return jdbc.callIncomeProc(exeDay, nextDay);
                     }
                 });

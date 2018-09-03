@@ -24,7 +24,7 @@ public class PhoneLocator {
             "  select  substring(mobileno,1,7) as phone_segment  " +
             "  from custinfo " +
             "  where  not exists (select 1 from phonenum_location where num_segment = substring(mobileno,1,7)) " +
-            "  limit 300 " +
+            "  limit 1000 " +
             ") t  ";
 
     public static final String NEW_SEGMENT_SQL2 = "select distinct phone_segment from (" +
@@ -37,14 +37,14 @@ public class PhoneLocator {
     public static final String INSERT_SQL = "INSERT INTO phonenum_location(num_segment, location) VALUES(?,?)";
 
     public static void main(String[] args) throws Exception {
-        System.out.println(getLocation("1868226"));
+        //System.out.println(getLocation("1868226"));
         iterateLocation();
     }
 
     private static void iterateLocation() throws Exception {
         while (true) {
             List<String> newSegments = queryNewSegments();
-            if (newSegments.size() < 10) {
+            if (newSegments.size() < 1) {
                 ConsoleLog.println("提取数量太少，终止:" + newSegments.size());
                 break;
             } else {

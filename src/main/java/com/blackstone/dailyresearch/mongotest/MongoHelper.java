@@ -76,8 +76,8 @@ public class MongoHelper {
             MongoClientOptions mongoOptions = optBuilder.build();
 
             //认证
-            String user = "zlfund";
-            String password = "zlfund";
+            String user = "xxxxxx";
+            String password = "xxxxxx";
             String db = StringUtils.isEmpty(dbName) ? DEFAULT_DB_NAME : dbName;
 
             MongoCredential credential = MongoCredential.createCredential(user, db, password.toCharArray());
