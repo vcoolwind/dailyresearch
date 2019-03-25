@@ -19,8 +19,8 @@ public class Income {
         ExecutorService executor = new ThreadPoolExecutor(5, 5, 0L, MILLISECONDS, workQueue, policy);
         CompletionService<String> completionService = new ExecutorCompletionService<String>(executor);
         int taskNum = 0;
-        String start = "20180801";
-        String end = "20180903";
+        String start = "20181008";
+        String end = "20181101";
 
         String current = start;
 
