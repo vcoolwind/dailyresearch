@@ -1,4 +1,4 @@
-package com.blackstone.dailyresearch.nio.v1;
+package com.blackstone.dailyresearch.nio.proto.v1;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -27,6 +27,7 @@ public class NIOServer1 {
                 Iterator<SelectionKey> it = selector.selectedKeys().iterator();
                 while (it.hasNext()) {
                     SelectionKey key = it.next();
+                    System.out.println("new EVENT:"+key);
                     it.remove();
                     if (key.isAcceptable()) {
                         System.out.println("new Connection!");
@@ -45,7 +46,7 @@ public class NIOServer1 {
                         try {
                             //有可读数据事件
                             SocketChannel channel = (SocketChannel) key.channel();
-                            if (!channel.isConnected()) {
+                            if (!channel.isConnected()||channel.socket()==null) {
                                 continue;
                             }
                             ByteBuffer buffer = ByteBuffer.allocate(128);
@@ -58,12 +59,20 @@ public class NIOServer1 {
                                 continue;
                             }
                             byte[] data = buffer.array();
-                            String message = new String(data);
-                            System.out.println("receive message from client, size:" + buffer.position() + " msg: " + message);
+                            String message = new String(data,0,buffer.position());
+                            System.out.println("[receive message] size:" + buffer.position() + " msg: " + message);
+                            channel.write(ByteBuffer.wrap(("echo>> "+message).getBytes()));
+                            if("bye".equals(message)){
+                                System.out.println("client request close，server disconnect now。");
+                                channel.close();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
+                    }else{
+                        System.out.println("unknown event");
+                        System.out.println(key);
                     }
                 }
             }
